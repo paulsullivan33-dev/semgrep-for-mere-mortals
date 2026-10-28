@@ -1,0 +1,58 @@
+The lab's commands, in the order the guide runs them.
+All scans were run from the semgrep-lab/ folder, logged out,
+with the venv's bin folder on PATH. Transcripts of the real
+output live in semgrep-lab/transcripts/.
+
+Install (chapter 3)
+    python3 -m venv ~/semgrep-venv
+    ~/semgrep-venv/bin/pip install semgrep
+    semgrep --version                                   -> t00
+
+First scan (chapter 4)
+    semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/shop.py
+                                                        -> t01
+    semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/clean.py
+                                                        -> t12
+
+Exit codes (chapter 7)
+    semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/shop.py
+    semgrep scan --config rules/lab-rules.yaml --metrics=off --error fixtures/shop.py
+    semgrep scan --config rules/lab-rules.yaml --metrics=off --error fixtures/clean.py
+    semgrep scan --config rules/lab-rules.yaml --metrics=off --error fixtures/suppressed.py
+                                                        -> t02
+
+JSON (chapter 7)
+    semgrep scan --config rules/lab-rules.yaml --metrics=off --json fixtures/shop.py
+                                                        -> t03
+
+Registry (chapter 6)
+    semgrep scan --config p/python --metrics=off fixtures/shop.py fixtures/clean.py
+                                                        -> t04
+    semgrep scan --config p/security-audit --metrics=off fixtures/
+                                                        -> t05
+    semgrep scan --config auto --metrics=off fixtures/shop.py
+                                                        -> t90 (refuses)
+
+Suppressing and ignoring (chapter 8)
+    semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/suppressed.py
+                                                        -> t06
+    cd ignore-demo
+    semgrep scan --config ../rules/lab-rules.yaml --metrics=off .
+                                                        -> t10
+
+Other languages (chapter 9)
+    semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/page.js
+    semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/cleanup.sh
+                                                        -> t07
+
+Taint and tests (chapter 10)
+    semgrep scan --config rules/taint-sql.yaml --metrics=off --dataflow-traces fixtures/shop.py
+                                                        -> t08
+    semgrep --test --config rules/lab-rules.yaml rules/lab-rules.test.py --metrics=off
+                                                        -> t09
+
+Autofix (chapter 11)
+    cp fixtures/page.js fixtures/page-copy.js
+    semgrep scan --config rules/lab-rules.yaml --metrics=off --autofix fixtures/page-copy.js
+    grep -n "textContent\|innerHTML" fixtures/page-copy.js
+    rm fixtures/page-copy.js                            -> t11

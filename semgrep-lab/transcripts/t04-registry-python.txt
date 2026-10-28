@@ -1,0 +1,54 @@
+$ semgrep scan --config p/python --metrics=off fixtures/shop.py fixtures/clean.py
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 2 files tracked by git with 151 Code rules:
+  Scanning 2 files with 151 python rules.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 3 (3 blocking)
+ • Rules run: 151
+ • Targets scanned: 2
+ • Parsed lines: ~100.0%
+ • No ignore information available
+Ran 151 rules on 2 files: 3 findings.
+                   
+                   
+┌─────────────────┐
+│ 3 Code Findings │
+└─────────────────┘
+                    
+    fixtures/shop.py
+   ❯❯❱ python.lang.security.audit.subprocess-shell-true.subprocess-shell-true
+          ❰❰ Blocking ❱❱
+          Found 'subprocess' function 'call' with 'shell=True'. This is dangerous because this call will spawn
+          the command using a shell process. Doing so propagates current shell settings and variables, which  
+          makes it much easier for a malicious actor to execute commands. Use 'shell=False' instead.          
+          Details: https://sg.run/J92w                                                                        
+                                                                                                              
+           ▶▶┆ Autofix ▶ False
+           32┆ subprocess.call("ls -l " + command, shell=True)
+   
+    ❯❱ python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5
+          ❰❰ Blocking ❱❱
+          Detected MD5 hash algorithm which is considered insecure. MD5 is not collision resistant and is
+          therefore not suitable as a cryptographic signature. Use SHA256 or SHA3 instead.               
+          Details: https://sg.run/vYrY                                                                   
+                                                                                                         
+           37┆ return hashlib.md5(password.encode()).hexdigest()
+   
+    ❯❱ python.lang.security.audit.md5-used-as-password.md5-used-as-password
+          ❰❰ Blocking ❱❱
+          It looks like MD5 is used as a password hash. MD5 is not considered a secure password hash because  
+          it can be cracked by an attacker in a short amount of time. Use a suitable password hashing function
+          such as scrypt. You can use `hashlib.scrypt`.                                                       
+          Details: https://sg.run/5DwD                                                                        
+                                                                                                              
+           37┆ return hashlib.md5(password.encode()).hexdigest()
+

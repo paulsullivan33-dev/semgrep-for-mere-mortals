@@ -1,0 +1,28 @@
+site_name: Semgrep for Mere Mortals
+site_description: A code scanner that reads your programs the way you wrote them. Writing rules that find injection flaws, unsafe calls and bad habits in Python, JavaScript and shell, reading findings, silencing the false ones, and knowing what a pattern cannot see.
+site_url: https://paulsullivan33-dev.github.io/semgrep-for-mere-mortals/
+copyright: 'Part of <a href="https://paulsullivan33-dev.github.io/mere-mortals/">For Mere Mortals</a> · Text <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, code MIT'
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Semgrep Is: what-semgrep-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Semgrep: installing-semgrep.md
+  - Your First Scan: your-first-scan.md
+  - Writing Rules: writing-rules.md
+  - Using the Registry: using-the-registry.md
+  - Reading Findings: reading-findings.md
+  - False Positives and Ignoring: false-positives-and-ignoring.md
+  - Other Languages: other-languages.md
+  - Taint Mode and Rule Tests: taint-and-rule-tests.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

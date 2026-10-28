@@ -1,0 +1,10 @@
+$ semgrep --test --config rules/lab-rules.yaml rules/lab-rules.test.py --metrics=off
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 1 file with 6 Code rules:
+  Scanning 1 file with 3 python rules.
+2/2: ✓ All tests passed
+No tests for fixes found.

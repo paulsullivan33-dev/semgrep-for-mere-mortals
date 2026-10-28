@@ -1,0 +1,32 @@
+$ cat > broken.yaml <<EOF
+rules:
+  - id: broken-rule
+    languages: [python]
+    severity: ERROR
+    message: test
+    pattern: "def ((( :"
+EOF
+$ semgrep scan --config broken.yaml --metrics=off bare.py
+semgrep-core rule validation failed (PatternParseError)
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 1 file tracked by git with 1 Code rule:
+  Scanning 1 file.
+[ERROR] Rule parse error in rule broken-rule:
+ Invalid pattern for Python: Stdlib.Parsing.Parse_error
+----- pattern -----
+def ((( :
+----- end pattern -----
+
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+$ semgrep scan --config broken.yaml --metrics=off bare.py > /dev/null 2>&1
+$ echo $?
+2

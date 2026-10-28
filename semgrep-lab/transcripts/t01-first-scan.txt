@@ -1,0 +1,48 @@
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/shop.py
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 1 file tracked by git with 6 Code rules:
+  Scanning 1 file with 3 python rules.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 3 (3 blocking)
+ • Rules run: 3
+ • Targets scanned: 1
+ • Parsed lines: ~100.0%
+ • No ignore information available
+Ran 3 rules on 1 file: 3 findings.
+                   
+                   
+┌─────────────────┐
+│ 3 Code Findings │
+└─────────────────┘
+                    
+    fixtures/shop.py
+    ❯❱ rules.lab-hardcoded-password
+          ❰❰ Blocking ❱❱
+          A password written into source code is shared with anyone who can read the code, and changing it
+          means changing the program. Read secrets from the environment or a secrets store instead.       
+                                                                                                          
+           13┆ DB_PASSWORD = "s3cret-shop-password"
+   
+   ❯❯❱ rules.lab-subprocess-shell-true
+          ❰❰ Blocking ❱❱
+          A subprocess started with shell=True asks the shell to interpret the command string, so anything
+          glued into that string can become a command. Pass a list of arguments instead, with no shell.   
+                                                                                                          
+           32┆ subprocess.call("ls -l " + command, shell=True)
+   
+   ❯❯❱ rules.lab-python-no-eval
+          ❰❰ Blocking ❱❱
+          eval() runs whatever text it is handed as code. Pass data to a parser or a lookup table instead,
+          never to eval().                                                                                
+                                                                                                          
+           42┆ return eval(expression)
+

@@ -1,0 +1,12 @@
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off fixtures/shop.py > /dev/null 2>&1
+$ echo $?
+0
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off --error fixtures/shop.py > /dev/null 2>&1
+$ echo $?
+1
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off --error fixtures/clean.py > /dev/null 2>&1
+$ echo $?
+0
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off --error fixtures/suppressed.py > /dev/null 2>&1
+$ echo $?
+1

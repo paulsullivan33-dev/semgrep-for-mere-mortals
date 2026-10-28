@@ -1,0 +1,23 @@
+# The lab's taint rule, for chapter 10. Where the search-mode
+# rules in lab-rules.yaml match a shape, this rule follows a
+# value: anything typed at an input() prompt is a source, and
+# a database execute() call is a sink. If a typed value can
+# reach a query, the rule reports the path it took.
+
+rules:
+  - id: lab-taint-input-to-sql
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Text typed by a user reaches a SQL query without being
+      passed as a parameter. If the text contains a quote, it
+      can change what the query means.
+    mode: taint
+    pattern-sources:
+      - pattern: input(...)
+    pattern-sinks:
+      - patterns:
+          - pattern-inside: |
+              def $F(...):
+                ...
+          - pattern: $CURSOR.execute(...)

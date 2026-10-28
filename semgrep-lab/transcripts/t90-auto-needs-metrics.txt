@@ -1,0 +1,2 @@
+$ semgrep scan --config auto --metrics=off fixtures/shop.py
+[00.09][ERROR]: Cannot create auto config when metrics are off. Please allow metrics or run with a specific config.

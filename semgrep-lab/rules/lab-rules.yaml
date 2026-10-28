@@ -1,0 +1,68 @@
+# The lab's own small ruleset. Every rule here is read aloud
+# and taken apart in chapter 5 (Writing Rules). They are
+# teaching rules, deliberately narrow: each one looks for a
+# single shape, in the languages listed, and says so.
+
+rules:
+  - id: lab-python-no-eval
+    languages: [python]
+    severity: ERROR
+    message: >-
+      eval() runs whatever text it is handed as code. Pass data
+      to a parser or a lookup table instead, never to eval().
+    pattern: eval(...)
+
+  - id: lab-js-no-eval
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      eval() runs whatever text it is handed as code. Pass data
+      to a parser or a lookup table instead, never to eval().
+    pattern: eval(...)
+
+  - id: lab-subprocess-shell-true
+    languages: [python]
+    severity: ERROR
+    message: >-
+      A subprocess started with shell=True asks the shell to
+      interpret the command string, so anything glued into that
+      string can become a command. Pass a list of arguments
+      instead, with no shell.
+    pattern: subprocess.$FN(..., shell=True, ...)
+
+  - id: lab-hardcoded-password
+    languages: [python]
+    severity: WARNING
+    message: >-
+      A password written into source code is shared with anyone
+      who can read the code, and changing it means changing the
+      program. Read secrets from the environment or a secrets
+      store instead.
+    patterns:
+      - pattern: $NAME = $VALUE
+      - metavariable-regex:
+          metavariable: $NAME
+          regex: '(?i).*(password|passwd|secret).*'
+      - metavariable-regex:
+          metavariable: $VALUE
+          regex: '^".*"$'
+
+  - id: lab-js-innerhtml
+    languages: [javascript]
+    severity: WARNING
+    message: >-
+      Assigning a variable to innerHTML lets that text become
+      markup, scripts included. Use textContent for plain text.
+    patterns:
+      - pattern: $EL.innerHTML = $DATA
+      - pattern-not: $EL.innerHTML = "..."
+    fix: $EL.textContent = $DATA
+
+  - id: lab-bash-rm-rf-unquoted
+    languages: [bash]
+    severity: ERROR
+    message: >-
+      An unquoted variable after rm -rf can expand to more
+      than the folder you meant, or to nothing at all. Quote
+      the variable and check it is not empty.
+    pattern: rm -rf $TARGET

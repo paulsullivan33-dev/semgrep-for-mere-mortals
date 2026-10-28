@@ -1,0 +1,32 @@
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off --json fixtures/shop.py 2>/dev/null | python3 -c "..."
+# (the Python reads the JSON and prints one line per finding)
+top-level keys: ['engine_requested', 'errors', 'paths', 'profiling_results', 'results', 'skipped_rules', 'time', 'version']
+rules.lab-hardcoded-password | fixtures/shop.py line 13 | severity: WARNING
+rules.lab-subprocess-shell-true | fixtures/shop.py line 32 | severity: ERROR
+rules.lab-python-no-eval | fixtures/shop.py line 42 | severity: ERROR
+
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off --json fixtures/shop.py 2>/dev/null | python3 -c "..."
+# (the same JSON again, printing the first finding in full)
+{
+  "check_id": "rules.lab-hardcoded-password",
+  "path": "fixtures/shop.py",
+  "start": {
+    "line": 13,
+    "col": 1,
+    "offset": 307
+  },
+  "end": {
+    "line": 13,
+    "col": 37,
+    "offset": 343
+  },
+  "extra": {
+    "message": "A password written into source code is shared with anyone who can read the code, and changing it means changing the program. Read secrets from the environment or a secrets store instead.",
+    "metadata": {},
+    "severity": "WARNING",
+    "fingerprint": "requires login",
+    "lines": "requires login",
+    "validation_state": "NO_VALIDATOR",
+    "engine_kind": "OSS"
+  }
+}

@@ -1,0 +1,28 @@
+$ cp fixtures/page.js fixtures/page-copy.js
+$ semgrep scan --config rules/lab-rules.yaml --metrics=off --autofix fixtures/page-copy.js
+Ran 2 rules on 1 file: 2 findings.
+                   
+                   
+┌─────────────────┐
+│ 2 Code Findings │
+└─────────────────┘
+                         
+    fixtures/page-copy.js
+   ❯❯❱ rules.lab-js-no-eval
+          ❰❰ Blocking ❱❱
+          eval() runs whatever text it is handed as code. Pass data to a parser or a lookup table instead,
+          never to eval().                                                                                
+                                                                                                          
+            6┆ return eval(code);
+   
+    ❯❱ rules.lab-js-innerhtml
+          ❰❰ Blocking ❱❱
+          Assigning a variable to innerHTML lets that text become markup, scripts included. Use textContent
+          for plain text.                                                                                  
+                                                                                                           
+           ▶▶┆ Autofix ▶ el.textContent = "Hello, " + name
+           11┆ el.innerHTML = "Hello, " + name;
+$ grep -n "textContent\|innerHTML" fixtures/page-copy.js
+11:  el.textContent = "Hello, " + name;
+16:  el.innerHTML = "Welcome back.";
+$ rm fixtures/page-copy.js
